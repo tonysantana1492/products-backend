@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    depends_on:
+      - productsdb  
+    volumes:
+      - .:/usr/src/app
+    env_file:
+    - .env
+    command: npm run start:dev
+    ports:
+      - 3000:3000  
+    productsdb:
+      image: mongo:6.0
+      container_name: products-database
+      ports:
+        - 37017:27017
+      volumes:
+        - ./mongo:/data/db
+volumes:
+  docker-nest-mongodb: {}
