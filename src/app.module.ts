@@ -17,6 +17,7 @@ import { LoggerModule } from "./features/logger/logger.module";
 			validate,
 			load: [appConfig, databaseConfig, jwtConfig]
 		}),
+		// MongooseModule.forRoot("mongodb://localhost:27017/productsdb")
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
