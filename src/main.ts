@@ -1,4 +1,4 @@
-import { VersioningType } from "@nestjs/common";
+import { VersioningType, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -9,6 +9,8 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		bufferLogs: true
 	});
+
+	app.useGlobalPipes(new ValidationPipe());
 
 	const configService = app.get(ConfigService);
 
