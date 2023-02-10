@@ -7,8 +7,8 @@ export default registerAs("app", () => ({
 	// API URL
 	url: process.env.APP_URL || "localhost",
 
-	// API Environment: local | production | staging
-	env: process.env.APP_ENV || "local",
+	// API Environment: development | production | test
+	env: process.env.APP_ENV || "development",
 
 	// API debug mode is enable or not: true | false
 	debugMode: process.env.APP_DEBUG === "false" ? false : true,
