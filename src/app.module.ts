@@ -5,6 +5,7 @@ import jwtConfig from "./config/jwt.config";
 import { validate } from "./env.validation";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { UsersModule } from "./features/users/users.module";
 
 @Module({
 	imports: [
@@ -15,16 +16,17 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 			validate,
 			load: [appConfig, databaseConfig, jwtConfig]
 		}),
+		// MongooseModule.forRoot("mongodb://localhost:27017/tutorial"),
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			connectionName: "products",
 			useFactory: async (config: ConfigService) => ({
 				uri: config.get("database.mongoUrl"),
 				useNewUrlParser: true,
 				useUnifiedTopology: true
 			})
-		})
+		}),
+		UsersModule
 	],
 	controllers: [],
 	providers: []
