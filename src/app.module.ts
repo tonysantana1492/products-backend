@@ -7,6 +7,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { UsersModule } from "./features/users/users.module";
 import { LoggerModule } from "./features/logger/logger.module";
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { ProductModule } from "./features/products/products.module";
 
 @Module({
 	imports: [
@@ -27,6 +29,8 @@ import { LoggerModule } from "./features/logger/logger.module";
 				useUnifiedTopology: true
 			})
 		}),
+		AuthenticationModule,
+		ProductModule,
 		UsersModule,
 		LoggerModule
 	],
