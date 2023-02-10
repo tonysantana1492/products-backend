@@ -6,6 +6,7 @@ import { validate } from "./env.validation";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { UsersModule } from "./features/users/users.module";
+import { LoggerModule } from "./features/logger/logger.module";
 
 @Module({
 	imports: [
@@ -16,7 +17,6 @@ import { UsersModule } from "./features/users/users.module";
 			validate,
 			load: [appConfig, databaseConfig, jwtConfig]
 		}),
-		// MongooseModule.forRoot("mongodb://localhost:27017/tutorial"),
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
@@ -26,7 +26,8 @@ import { UsersModule } from "./features/users/users.module";
 				useUnifiedTopology: true
 			})
 		}),
-		UsersModule
+		UsersModule,
+		LoggerModule
 	],
 	controllers: [],
 	providers: []
