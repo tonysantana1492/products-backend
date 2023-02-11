@@ -1,42 +1,25 @@
-import { Controller, Request, Get, Post, Body, UseGuards } from "@nestjs/common";
+import { Controller, Post, Body } from "@nestjs/common";
 import { AuthenticationService } from "./authentication.service";
 import { UsersService } from "../features/users/users.service";
-import { CreateUserDto } from "../features/users/dto/create-user.dto";
-import { LocalAuthGuard } from "src/authorization/guards/local.guard";
-import { JwtAuthGuard } from "src/authorization/guards/jwt.guard";
-import { RolesGuard } from "src/authorization/guards/roles.guard";
-import { Roles } from "src/authorization/decorators/roles.decorator";
-import { Role } from "src/authorization/enums/role.enum";
+
+import { LogInDto } from "./dto/login.dto";
+import { RegisterDto } from "./dto/register.dto";
+
+import { Token } from "src/authorization/interfaces/token.interface";
 import { ApiTags } from "@nestjs/swagger";
 
 @Controller("auth")
 @ApiTags("auth")
 export class AuthenticationController {
-	constructor(private authService: AuthenticationService, private usersService: UsersService) {}
+	constructor(private authenticationService: AuthenticationService, private usersService: UsersService) {}
 
 	@Post("/register")
-	async register(@Body() createUserDTO: CreateUserDto) {
-		const user = await this.usersService.create(createUserDTO);
-		return user;
+	async register(@Body() registrationData: RegisterDto): Promise<Token> {
+		return this.authenticationService.register(registrationData);
 	}
 
-	@UseGuards(LocalAuthGuard)
 	@Post("/login")
-	async login(@Request() req) {
-		return this.authService.login(req.user);
-	}
-
-	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.User)
-	@Get("/user")
-	getProfile(@Request() req) {
-		return req.user;
-	}
-
-	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.Admin)
-	@Get("/admin")
-	getDashboard(@Request() req) {
-		return req.user;
+	async login(@Body() loginData: LogInDto): Promise<Token> {
+		return this.authenticationService.login(loginData);
 	}
 }

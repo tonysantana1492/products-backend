@@ -12,7 +12,7 @@ export type InventoryDocument = Inventory & Document;
 export class Inventory {
 	_id: string;
 
-	@Prop({ type: MongooseSchema.Types.ObjectId, ref: Product.name, required: true })
+	@Prop({ type: MongooseSchema.Types.ObjectId, ref: Product.name, required: true, unique: true })
 	product: Product;
 
 	@Prop({ required: true })
