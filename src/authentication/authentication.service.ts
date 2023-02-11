@@ -40,7 +40,7 @@ export class AuthenticationService {
 		};
 	}
 
-	private sigInToken(payload: TokenPayload): string {
+	public sigInToken(payload: TokenPayload): string {
 		return this.jwtService.sign(payload);
 	}
 

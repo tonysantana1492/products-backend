@@ -1,9 +1,10 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
+import { Injectable, HttpStatus } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Inventory, InventoryDocument } from "./entities/inventory.entity";
 import { CreateInventoryDTO } from "./dto/create-inventory.dto";
 import { ProductService } from "../products/product.service";
+import { InventoryException } from "./exceptions/inventory.exception";
 // import { INITIAL_DATA } from "src/utils/seed-data";
 
 @Injectable()
@@ -33,10 +34,10 @@ export class InventoryService {
 			return newInventory.save();
 		} catch (error) {
 			if (error?.name === "MongoServerError") {
-				throw new HttpException("This slug already exists", HttpStatus.BAD_REQUEST);
+				throw new InventoryException("This product already exists in the inventary", HttpStatus.BAD_REQUEST);
 			}
 
-			throw new HttpException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InventoryException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -57,7 +58,7 @@ export class InventoryService {
 
 		const newAmount = actualAmount - reduceAmount;
 
-		if (newAmount < 0) throw new HttpException("We have not this amount available", HttpStatus.BAD_REQUEST);
+		if (newAmount < 0) throw new InventoryException("We have not this amount available", HttpStatus.BAD_REQUEST);
 
 		inventory.amount = newAmount;
 

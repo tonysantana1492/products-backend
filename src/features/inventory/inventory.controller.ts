@@ -42,15 +42,13 @@ export class InventoryController {
 		@Param("productId") productId: string,
 		@Body() { amount }: UpdateInventoryDTO
 	): Promise<Inventory> {
-		const inventory = await this.inventoryService.incrementInventaryByProductId(productId, amount);
-		return inventory;
+		return this.inventoryService.incrementInventaryByProductId(productId, amount);
 	}
 
 	@Roles(Role.Client)
 	@Get("/:productId")
 	public async getinventaryProductById(@Param("productId") productId: string): Promise<Inventory> {
-		const inventory = await this.inventoryService.getinventaryByProductId(productId);
-		return inventory;
+		return this.inventoryService.getinventaryByProductId(productId);
 	}
 
 	@Roles(Role.Client)
@@ -59,7 +57,6 @@ export class InventoryController {
 		@Param("productId") productId: string,
 		@Body() { amount }: UpdateInventoryDTO
 	): Promise<Inventory> {
-		const inventory = await this.inventoryService.reduceInventaryByProductId(productId, amount);
-		return inventory;
+		return this.inventoryService.reduceInventaryByProductId(productId, amount);
 	}
 }

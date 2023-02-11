@@ -1,11 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserNotFoundException } from "./exceptions/user-not-found.exception";
 import { UserDocument, User } from "./entities/user.entity";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { TokenPayload } from "src/authorization/interfaces/token-payload.interface";
-import { EmailExistsException } from "./exceptions/email-exists.exception";
+import { EmailAlreadyExistsException } from "./exceptions/email-already-exists.exception";
+import { UserException } from "./exceptions/user.exception";
 
 @Injectable()
 export class UsersService {
@@ -20,9 +21,9 @@ export class UsersService {
 
 			return payload;
 		} catch (error: any) {
-			if (error?.name === "MongoServerError") throw new EmailExistsException();
+			if (error?.name === "MongoServerError") throw new EmailAlreadyExistsException();
 
-			throw new HttpException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new UserException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -36,6 +37,7 @@ export class UsersService {
 		if (user) {
 			return user;
 		}
+
 		throw new UserNotFoundException(id);
 	}
 
@@ -45,6 +47,7 @@ export class UsersService {
 		if (user) {
 			return user;
 		}
-		throw new HttpException("User with this email does not exist", HttpStatus.NOT_FOUND);
+
+		throw new UserException("User with this email does not exist", HttpStatus.NOT_FOUND);
 	}
 }
