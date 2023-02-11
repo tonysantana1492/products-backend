@@ -17,12 +17,6 @@ export class Inventory {
 
 	@Prop({ required: true })
 	amount: number;
-
-	@Prop()
-	createdAt: Date;
-
-	@Prop()
-	updatedAt: Date;
 }
 
 export const InventorySchema = SchemaFactory.createForClass(Inventory);

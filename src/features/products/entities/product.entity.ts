@@ -25,12 +25,6 @@ export class Product {
 
 	@Prop({ required: true })
 	category: string;
-
-	@Prop()
-	createdAt: Date;
-
-	@Prop()
-	updatedAt: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

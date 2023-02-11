@@ -23,12 +23,6 @@ export class User {
 
 	@Prop({ enum: Role, required: true })
 	role: string;
-
-	@Prop()
-	createdAt: Date;
-
-	@Prop()
-	updatedAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
