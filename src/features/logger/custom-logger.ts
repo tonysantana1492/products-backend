@@ -27,11 +27,13 @@ export class CustomLogger extends ConsoleLogger {
 	log(message: string, context?: string) {
 		super.log.apply(this, [message, context]);
 
-		this.logsService.createLog({
-			message,
-			context,
-			level: "log"
-		});
+		// TODO: Type logs are not stores in database
+
+		// this.logsService.createLog({
+		// message,
+		// context,
+		// level: "log"
+		// });
 	}
 
 	error(message: string, context?: string, stack?: string) {
