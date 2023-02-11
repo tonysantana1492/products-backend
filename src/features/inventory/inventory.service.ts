@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Inventory, InventoryDocument } from "./entities/inventory.entity";
 import { CreateInventoryDTO } from "./dto/create-inventory.dto";
 import { ProductService } from "../products/product.service";
+// import { INITIAL_DATA } from "src/utils/seed-data";
 
 @Injectable()
 export class InventoryService {
@@ -12,13 +13,31 @@ export class InventoryService {
 		private readonly productService: ProductService
 	) {}
 
+	// public async createDataTest(): Promise<void> {
+	// 	const inventoryInitial = INITIAL_DATA.inventory;
+
+	// 	for (const data of inventoryInitial) {
+	// 		await this.addProductToInventory(data);
+	// 	}
+
+	// 	return;
+	// }
+
 	public async addProductToInventory(createInventoryDTO: CreateInventoryDTO): Promise<Inventory> {
 		const { product, amount } = createInventoryDTO;
 
-		const { _id } = await this.productService.addProduct(product);
+		try {
+			const { _id } = await this.productService.addProduct(product);
 
-		const newInventory = await this.inventoryModel.create({ product: _id, amount });
-		return newInventory.save();
+			const newInventory = await this.inventoryModel.create({ product: _id, amount });
+			return newInventory.save();
+		} catch (error) {
+			if (error?.name === "MongoServerError") {
+				throw new HttpException("This slug already exists", HttpStatus.BAD_REQUEST);
+			}
+
+			throw new HttpException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	public async getInventaryProducts(): Promise<Inventory[]> {

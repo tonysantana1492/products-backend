@@ -12,7 +12,7 @@ export class LogInDto {
 	@IsNotEmpty()
 	@MinLength(7)
 	@ApiProperty({
-		example: "password"
+		example: "LongPassword*"
 	})
 	password: string;
 }

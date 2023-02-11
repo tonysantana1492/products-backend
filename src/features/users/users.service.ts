@@ -5,18 +5,25 @@ import { UserDocument, User } from "./entities/user.entity";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { TokenPayload } from "src/authorization/interfaces/token-payload.interface";
+import { EmailExistsException } from "./exceptions/email-exists.exception";
 
 @Injectable()
 export class UsersService {
 	constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
 
 	public async create(createUserDto: CreateUserDto): Promise<TokenPayload> {
-		const newUser = await this.userModel.create(createUserDto);
-		await newUser.save();
+		try {
+			const newUser = await this.userModel.create(createUserDto);
+			await newUser.save();
 
-		const payload = { userId: newUser._id };
+			const payload = { userId: newUser._id };
 
-		return payload;
+			return payload;
+		} catch (error: any) {
+			if (error?.name === "MongoServerError") throw new EmailExistsException();
+
+			throw new HttpException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	public async getAllUsers(): Promise<User[]> {
