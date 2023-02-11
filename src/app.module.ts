@@ -9,6 +9,7 @@ import { UsersModule } from "./features/users/users.module";
 import { LoggerModule } from "./features/logger/logger.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { ProductModule } from "./features/products/products.module";
+import { InventoryModule } from "./features/inventory/inventory.module";
 
 @Module({
 	imports: [
@@ -19,7 +20,6 @@ import { ProductModule } from "./features/products/products.module";
 			validate,
 			load: [appConfig, databaseConfig, jwtConfig]
 		}),
-		// MongooseModule.forRoot("mongodb://localhost:27017/productsdb")
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
@@ -32,6 +32,7 @@ import { ProductModule } from "./features/products/products.module";
 		AuthenticationModule,
 		ProductModule,
 		UsersModule,
+		InventoryModule,
 		LoggerModule
 	],
 	controllers: [],
