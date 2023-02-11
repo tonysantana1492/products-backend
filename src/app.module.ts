@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, MiddlewareConsumer } from "@nestjs/common";
 import appConfig from "./config/app.config";
 import databaseConfig from "./config/database.config";
 import jwtConfig from "./config/jwt.config";
@@ -10,6 +10,7 @@ import { LoggerModule } from "./features/logger/logger.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { ProductModule } from "./features/products/products.module";
 import { InventoryModule } from "./features/inventory/inventory.module";
+import { LogsMiddleware } from "./utils/logs.middleware";
 
 @Module({
 	imports: [
@@ -38,4 +39,8 @@ import { InventoryModule } from "./features/inventory/inventory.module";
 	controllers: [],
 	providers: []
 })
-export class AppModule {}
+export class AppModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LogsMiddleware).forRoutes("*");
+	}
+}

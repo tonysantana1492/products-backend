@@ -4,11 +4,14 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import { AppModule } from "./app.module";
+import { CustomLogger } from "./features/logger/custom-logger";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		bufferLogs: true
 	});
+
+	app.useLogger(app.get(CustomLogger));
 
 	app.useGlobalPipes(new ValidationPipe());
 
