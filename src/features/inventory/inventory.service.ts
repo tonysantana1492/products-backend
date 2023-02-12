@@ -36,7 +36,7 @@ export class InventoryService {
 				throw new InventoryException("This product already exists in the inventary", HttpStatus.BAD_REQUEST);
 			}
 
-			throw new InventoryException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InventoryException(error.message, HttpStatus.BAD_REQUEST);
 		}
 	}
 
