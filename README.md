@@ -13,7 +13,7 @@
 - `authentication` module - JWT token based cookie authentication out of the box
 - API validation and serialization
 - Swagger Open API specification setup out of the box - check the `src/features/inventory/inventory.controller.ts` for examples
-- MongoDB database file storing support
+- MongoDB database
 - Roles and Permissions based authorization setup - check out the `src/authorization` module. For implementation, check the `src/features/inventory` module
 
 ## Installation
@@ -23,7 +23,7 @@ $ npm install
 ```
 
 ## Config env variables
-Rename __.env.example file to __.env__
+Rename __.env.example__ file to __.env__
 
 ## Running the app
 
@@ -56,7 +56,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - Tony Santana López
+- Author - __Tony Santana López__
 
 ## License
 
