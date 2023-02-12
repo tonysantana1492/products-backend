@@ -6,7 +6,7 @@ import { User } from "../../features/users/entities/user.entity";
 import { UsersService } from "../../features/users/users.service";
 import { mockedJwtService } from "../../utils/mocks/jwt.service";
 import { mockedConfigService } from "../../utils/mocks/config.service";
-import { mockedUserAdmin } from "./user.mock";
+import { mockedUserClient } from "./user.mock";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { AuthenticationController } from "../authentication.controller";
 import * as request from "supertest";
@@ -18,7 +18,7 @@ describe("The AuthenticationController", () => {
 
 	beforeEach(async () => {
 		userData = {
-			...mockedUserAdmin
+			...mockedUserClient
 		};
 
 		const usersRepository = {
@@ -53,30 +53,27 @@ describe("The AuthenticationController", () => {
 
 	describe("when registering", () => {
 		describe("and using valid data", () => {
-			it("should respond with the data of the user without the password", () => {
-				const expectedData = {
-					...userData
-				};
-				// delete expectedData.password;
+			it("should respond with the token", async () => {
+				const tokenData = { access_token: "" };
 
-				return request(app.getHttpServer())
-					.post("/authentication/register")
+				await request(app.getHttpServer())
+					.post("/auth/register")
 					.send({
-						email: mockedUserAdmin.email,
-						name: mockedUserAdmin.name,
-						password: "strongPassword"
+						name: mockedUserClient.name,
+						email: mockedUserClient.email,
+						password: mockedUserClient.password,
+						role: mockedUserClient.role
 					})
-					.expect(201)
-					.expect(expectedData);
+					.expect(tokenData);
 			});
 		});
 
 		describe("and using invalid data", () => {
 			it("should throw an error", () => {
 				return request(app.getHttpServer())
-					.post("/authentication/register")
+					.post("/auth/register")
 					.send({
-						name: mockedUserAdmin.name
+						name: mockedUserClient.name
 					})
 					.expect(400);
 			});

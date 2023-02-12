@@ -34,9 +34,9 @@ describe("The AuthenticationService", () => {
 		authenticationService = await module.get<AuthenticationService>(AuthenticationService);
 	});
 
-	describe("when creating a cookie", () => {
+	describe("when creating a token", () => {
 		it("should return a string", () => {
-			const userId = 1;
+			const userId = "asdasasasas";
 			expect(typeof authenticationService.sigInToken({ userId })).toEqual("string");
 		});
 	});

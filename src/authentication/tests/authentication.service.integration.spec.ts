@@ -9,6 +9,8 @@ import { mockedConfigService } from "../../utils/mocks/config.service";
 import * as bcrypt from "bcrypt";
 import { mockedUserAdmin } from "./user.mock";
 import { getModelToken } from "@nestjs/mongoose";
+import { Query } from "mongoose";
+import { createMock } from "@golevelup/ts-jest";
 
 jest.mock("bcrypt");
 
@@ -23,9 +25,21 @@ describe("The AuthenticationService", () => {
 		userData = {
 			...mockedUserAdmin
 		};
-		findUser = jest.fn().mockResolvedValue(userData);
+		findUser = jest.fn().mockReturnValue(
+			createMock<Query<User, User>>({
+				exec: jest.fn().mockReturnValue(userData)
+			}) as any
+		);
+
 		const usersRepository = {
-			findOne: findUser
+			new: jest.fn().mockResolvedValue(userData),
+			constructor: jest.fn().mockResolvedValue(userData),
+			find: jest.fn(),
+			findOne: findUser,
+			update: jest.fn(),
+			create: jest.fn(),
+			remove: jest.fn(),
+			exec: jest.fn()
 		};
 
 		bcryptCompare = jest.fn().mockReturnValue(true);
@@ -44,7 +58,7 @@ describe("The AuthenticationService", () => {
 					useValue: mockedJwtService
 				},
 				{
-					provide: getModelToken(User.name),
+					provide: getModelToken("User"),
 					useValue: usersRepository
 				}
 			]
@@ -77,9 +91,6 @@ describe("The AuthenticationService", () => {
 				bcryptCompare.mockReturnValue(true);
 			});
 			describe("and the user is found in the database", () => {
-				beforeEach(() => {
-					findUser.mockResolvedValue(userData);
-				});
 				it("should return the user data", async () => {
 					const user = await authenticationService.getAuthenticatedUser("user@email.com", "strongPassword");
 					expect(user).toBe(userData);
@@ -88,7 +99,11 @@ describe("The AuthenticationService", () => {
 
 			describe("and the user is not found in the database", () => {
 				beforeEach(() => {
-					findUser.mockResolvedValue(undefined);
+					findUser.mockReturnValue(
+						createMock<Query<User, User>>({
+							exec: jest.fn().mockReturnValue(null)
+						}) as any
+					);
 				});
 				it("should throw an error", async () => {
 					await expect(
