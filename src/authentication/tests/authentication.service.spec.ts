@@ -7,6 +7,7 @@ import { UsersService } from "../../features/users/users.service";
 import { mockedJwtService } from "../../utils/mocks/jwt.service";
 import { mockedConfigService } from "../../utils/mocks/config.service";
 import { getModelToken } from "@nestjs/mongoose";
+import { EmptyLogger } from "src/utils/empty-logger";
 
 describe("The AuthenticationService", () => {
 	let authenticationService: AuthenticationService;
@@ -31,6 +32,7 @@ describe("The AuthenticationService", () => {
 			]
 		}).compile();
 
+		module.useLogger(new EmptyLogger());
 		authenticationService = await module.get<AuthenticationService>(AuthenticationService);
 	});
 

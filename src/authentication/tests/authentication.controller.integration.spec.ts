@@ -11,10 +11,12 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { AuthenticationController } from "../authentication.controller";
 import * as request from "supertest";
 import { getModelToken } from "@nestjs/mongoose";
+import { EmptyLogger } from "src/utils/empty-logger";
 
 describe("The AuthenticationController", () => {
 	let app: INestApplication;
 	let userData: User;
+	// let server: SERVER_TYPE;
 
 	beforeEach(async () => {
 		userData = {
@@ -46,9 +48,14 @@ describe("The AuthenticationController", () => {
 			]
 		}).compile();
 
+		module.useLogger(new EmptyLogger());
 		app = module.createNestApplication();
 		app.useGlobalPipes(new ValidationPipe());
 		await app.init();
+	});
+
+	afterEach(async () => {
+		await app.close();
 	});
 
 	describe("when registering", () => {

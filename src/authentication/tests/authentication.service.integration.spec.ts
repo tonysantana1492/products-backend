@@ -11,6 +11,7 @@ import { mockedUserAdmin } from "./user.mock";
 import { getModelToken } from "@nestjs/mongoose";
 import { Query } from "mongoose";
 import { createMock } from "@golevelup/ts-jest";
+import { EmptyLogger } from "src/utils/empty-logger";
 
 jest.mock("bcrypt");
 
@@ -64,6 +65,7 @@ describe("The AuthenticationService", () => {
 			]
 		}).compile();
 
+		module.useLogger(new EmptyLogger());
 		authenticationService = await module.get<AuthenticationService>(AuthenticationService);
 		usersService = await module.get<UsersService>(UsersService);
 	});
