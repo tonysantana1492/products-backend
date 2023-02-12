@@ -4,7 +4,7 @@ export const mockedUserAdmin: User = {
 	_id: "63e7fb74b085b11315705210",
 	name: "John",
 	email: "admin@example.com",
-	password: "hash",
+	password: "StrongPassword12*",
 	role: "admin"
 };
 
@@ -12,6 +12,6 @@ export const mockedUserClient: User = {
 	_id: "63e7fb74b085b11315705210",
 	name: "John",
 	email: "client@example.com",
-	password: "hash",
+	password: "StrongPassword12*",
 	role: "client"
 };
