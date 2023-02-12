@@ -10,20 +10,21 @@ import { UserException } from "./exceptions/user.exception";
 
 @Injectable()
 export class UsersService {
-	constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
+	constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
 	public async create(createUserDto: CreateUserDto): Promise<TokenPayload> {
 		try {
 			const newUser = await this.userModel.create(createUserDto);
-			await newUser.save();
 
 			const payload = { userId: newUser._id };
 
 			return payload;
 		} catch (error: any) {
+			console.log(error);
+
 			if (error?.name === "MongoServerError") throw new EmailAlreadyExistsException();
 
-			throw new UserException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new UserException("Something", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -31,7 +32,7 @@ export class UsersService {
 		return this.userModel.find().exec();
 	}
 
-	public async getById(id: number): Promise<User> {
+	public async getById(id: string): Promise<User> {
 		const user = this.userModel.findOne({ _id: id }).exec();
 
 		if (user) {
@@ -42,7 +43,7 @@ export class UsersService {
 	}
 
 	public async getByEmail(email: string) {
-		const user = await this.userModel.findOne({ email });
+		const user = await this.userModel.findOne({ email }).exec();
 
 		if (user) {
 			return user;

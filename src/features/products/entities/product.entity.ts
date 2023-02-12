@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { HydratedDocument } from "mongoose";
 
 const options = {
 	timestamps: true
 };
 
-export type ProductDocument = Product & Document;
+export type ProductDocument = HydratedDocument<Product>;
 
 @Schema(options)
 export class Product {

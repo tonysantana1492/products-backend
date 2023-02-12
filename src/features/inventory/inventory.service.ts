@@ -30,8 +30,7 @@ export class InventoryService {
 		try {
 			const { _id } = await this.productService.addProduct(product);
 
-			const newInventory = await this.inventoryModel.create({ product: _id, amount });
-			return newInventory.save();
+			return await this.inventoryModel.create({ product: _id, amount });
 		} catch (error) {
 			if (error?.name === "MongoServerError") {
 				throw new InventoryException("This product already exists in the inventary", HttpStatus.BAD_REQUEST);
@@ -42,13 +41,11 @@ export class InventoryService {
 	}
 
 	public async getInventaryProducts(): Promise<Inventory[]> {
-		const inventory = await this.inventoryModel.find().populate("product").lean();
-		return inventory;
+		return await this.inventoryModel.find().populate("product").exec();
 	}
 
 	public async getinventaryByProductId(productId: string): Promise<Inventory> {
-		const inventory = await this.inventoryModel.findOne({ product: productId }).populate("product").lean();
-		return inventory;
+		return await this.inventoryModel.findOne({ product: productId }).populate("product").exec();
 	}
 
 	public async reduceInventaryByProductId(productId: string, reduceAmount: number): Promise<Inventory> {

@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, Schema as MongooseSchema } from "mongoose";
+import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
 import { Product } from "src/features/products/entities/product.entity";
 
 const options = {
 	timestamps: true
 };
 
-export type InventoryDocument = Inventory & Document;
+export type InventoryDocument = HydratedDocument<Inventory>;
 
 @Schema(options)
 export class Inventory {

@@ -18,7 +18,8 @@ export class CustomLogger extends ConsoleLogger {
 
 		super(context, {
 			...options,
-			logLevels: getLogLevels(environment === "production")
+			logLevels: getLogLevels(environment === "production"),
+			timestamp: true
 		});
 
 		this.logsService = logsService;
@@ -27,7 +28,7 @@ export class CustomLogger extends ConsoleLogger {
 	log(message: string, context?: string) {
 		super.log.apply(this, [message, context]);
 
-		// TODO: Type logs are not stores in database
+		// TODO: Type logs are not store in database
 
 		// this.logsService.createLog({
 		// message,
