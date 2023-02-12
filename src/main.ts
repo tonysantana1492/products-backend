@@ -1,4 +1,4 @@
-import { VersioningType, ValidationPipe } from "@nestjs/common";
+import { VersioningType, ValidationPipe, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -11,11 +11,13 @@ async function bootstrap() {
 		bufferLogs: true
 	});
 
+	const configService = app.get(ConfigService);
+
 	app.useLogger(app.get(CustomLogger));
 
-	app.useGlobalPipes(new ValidationPipe());
+	const logger = new Logger("App");
 
-	const configService = app.get(ConfigService);
+	app.useGlobalPipes(new ValidationPipe());
 
 	app.setGlobalPrefix("/api");
 
@@ -35,9 +37,15 @@ async function bootstrap() {
 		.setVersion("1.0")
 		.addBearerAuth()
 		.build();
-	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup("api/v1", app, document);
 
-	await app.listen(configService.get("app.port"));
+	const url = configService.get("app.url");
+	const uri = "api/v1";
+
+	const document = SwaggerModule.createDocument(app, config);
+	SwaggerModule.setup(uri, app, document);
+
+	const port = configService.get("app.port");
+	await app.listen(port);
+	logger.debug(`Application is running on ${url}:${port}/${uri}`);
 }
 bootstrap();
