@@ -3,7 +3,11 @@ import { HydratedDocument } from "mongoose";
 
 export type LogDocument = HydratedDocument<Log>;
 
-@Schema()
+const options = {
+	timestamps: true
+};
+
+@Schema(options)
 export class Log {
 	@Prop()
 	id: number;
@@ -16,9 +20,6 @@ export class Log {
 
 	@Prop()
 	level: string;
-
-	@Prop()
-	creationDate: Date;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);
