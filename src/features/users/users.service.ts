@@ -20,11 +20,9 @@ export class UsersService {
 
 			return payload;
 		} catch (error: any) {
-			console.log(error);
-
 			if (error?.name === "MongoServerError") throw new EmailAlreadyExistsException();
 
-			throw new UserException("Something", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new UserException("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
