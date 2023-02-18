@@ -3,14 +3,14 @@ import appConfig from "./config/app.config";
 import databaseConfig from "./config/database.config";
 import jwtConfig from "./config/jwt.config";
 import { validate } from "./env.validation";
-import { MongooseModule } from "@nestjs/mongoose";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { UsersModule } from "./features/users/users.module";
 import { LoggerModule } from "./features/logger/logger.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { ProductModule } from "./features/products/products.module";
 import { InventoryModule } from "./features/inventory/inventory.module";
 import { LogsMiddleware } from "./utils/logs.middleware";
+import { DatabaseModule } from "./database/database.module";
 
 @Module({
 	imports: [
@@ -21,15 +21,7 @@ import { LogsMiddleware } from "./utils/logs.middleware";
 			validate,
 			load: [appConfig, databaseConfig, jwtConfig]
 		}),
-		MongooseModule.forRootAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: async (config: ConfigService) => ({
-				uri: config.get("database.mongoUrl"),
-				useNewUrlParser: true,
-				useUnifiedTopology: true
-			})
-		}),
+		DatabaseModule,
 		AuthenticationModule,
 		ProductModule,
 		UsersModule,
