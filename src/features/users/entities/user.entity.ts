@@ -1,9 +1,9 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
-import { Role } from "src/authorization/enums/role.enum";
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Role } from 'src/authorization/enums/role.enum';
 
 const options = {
-	timestamps: true
+	timestamps: true,
 };
 
 export type UserDocument = HydratedDocument<User>;

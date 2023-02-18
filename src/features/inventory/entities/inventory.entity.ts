@@ -1,18 +1,25 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
-import { Product } from "src/features/products/entities/product.entity";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform, Type } from 'class-transformer';
+import { HydratedDocument, ObjectId, Schema as MongooseSchema } from 'mongoose';
+import { Product } from 'src/features/products/entities/product.entity';
 
 const options = {
-	timestamps: true
+	timestamps: true,
+	toJSON: {
+		getters: true,
+		virtuals: true,
+	},
 };
 
 export type InventoryDocument = HydratedDocument<Inventory>;
 
 @Schema(options)
 export class Inventory {
-	_id: string;
+	@Transform(({ value }) => value.toString())
+	_id: ObjectId;
 
 	@Prop({ type: MongooseSchema.Types.ObjectId, ref: Product.name, required: true, unique: true })
+	@Type(() => Product)
 	product: Product;
 
 	@Prop({ required: true })

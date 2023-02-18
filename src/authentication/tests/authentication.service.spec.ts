@@ -1,15 +1,15 @@
-import { ConfigService } from "@nestjs/config";
-import { Test, TestingModule } from "@nestjs/testing";
-import { AuthenticationService } from "../authentication.service";
-import { JwtService } from "@nestjs/jwt";
-import { User } from "../../features/users/entities/user.entity";
-import { UsersService } from "../../features/users/users.service";
-import { mockedJwtService } from "../../utils/mocks/jwt.service";
-import { mockedConfigService } from "../../utils/mocks/config.service";
-import { getModelToken } from "@nestjs/mongoose";
-import { EmptyLogger } from "src/utils/empty-logger";
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthenticationService } from '../authentication.service';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../../features/users/entities/user.entity';
+import { UsersService } from '../../features/users/users.service';
+import { mockedJwtService } from '../../utils/mocks/jwt.service';
+import { mockedConfigService } from '../../utils/mocks/config.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { EmptyLogger } from 'src/utils/empty-logger';
 
-describe("The AuthenticationService", () => {
+describe('The AuthenticationService', () => {
 	let authenticationService: AuthenticationService;
 
 	beforeEach(async () => {
@@ -19,27 +19,27 @@ describe("The AuthenticationService", () => {
 				AuthenticationService,
 				{
 					provide: ConfigService,
-					useValue: mockedConfigService
+					useValue: mockedConfigService,
 				},
 				{
 					provide: JwtService,
-					useValue: mockedJwtService
+					useValue: mockedJwtService,
 				},
 				{
 					provide: getModelToken(User.name),
-					useValue: {}
-				}
-			]
+					useValue: {},
+				},
+			],
 		}).compile();
 
 		module.useLogger(new EmptyLogger());
 		authenticationService = await module.get<AuthenticationService>(AuthenticationService);
 	});
 
-	describe("when creating a token", () => {
-		it("should return a string", () => {
-			const userId = "asdasasasas";
-			expect(typeof authenticationService.sigInToken({ userId })).toEqual("string");
+	describe('when creating a token', () => {
+		it('should return a string', () => {
+			const userId = 'asdasasasas';
+			expect(typeof authenticationService.sigInToken({ userId })).toEqual('string');
 		});
 	});
 });

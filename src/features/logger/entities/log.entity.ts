@@ -1,10 +1,10 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type LogDocument = HydratedDocument<Log>;
 
 const options = {
-	timestamps: true
+	timestamps: true,
 };
 
 @Schema(options)

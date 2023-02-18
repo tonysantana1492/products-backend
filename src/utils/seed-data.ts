@@ -10,7 +10,7 @@ export interface SeedUser {
 	name: string;
 	email: string;
 	password: string;
-	role: "admin" | "client";
+	role: 'admin' | 'client';
 }
 
 export interface SeedInventory {
@@ -26,42 +26,42 @@ export interface SeedData {
 export const INITIAL_DATA: SeedData = {
 	users: [
 		{
-			name: "Admin",
-			email: "admin@example.com",
-			password: "LongPassword*",
-			role: "admin"
+			name: 'Admin',
+			email: 'admin@example.com',
+			password: 'LongPassword*',
+			role: 'admin',
 		},
 		{
-			name: "Client",
-			email: "client@example.com",
-			password: "LongPassword*",
-			role: "client"
-		}
+			name: 'Client',
+			email: 'client@example.com',
+			password: 'LongPassword*',
+			role: 'client',
+		},
 	],
 
 	inventory: [
 		{
 			product: {
-				name: "Men’s Chill Crew Neck Sweatshirt",
-				slug: "mens_chill_crew_neck_sweatshirt",
+				name: 'Men’s Chill Crew Neck Sweatshirt',
+				slug: 'mens_chill_crew_neck_sweatshirt',
 				description:
-					"Introducing the Tesla Chill Collection. The Men’s Chill Crew Neck Sweatshirt has a premium, heavyweight exterior and soft fleece interior for comfort in any season. The sweatshirt features a subtle thermoplastic polyurethane T logo on the chest and a Tesla wordmark below the back collar. Made from 60% cotton and 40% recycled polyester.",
+					'Introducing the Tesla Chill Collection. The Men’s Chill Crew Neck Sweatshirt has a premium, heavyweight exterior and soft fleece interior for comfort in any season. The sweatshirt features a subtle thermoplastic polyurethane T logo on the chest and a Tesla wordmark below the back collar. Made from 60% cotton and 40% recycled polyester.',
 
 				price: 75,
-				category: "shirts"
+				category: 'shirts',
 			},
-			amount: 4
+			amount: 4,
 		},
 		{
 			product: {
-				name: "Cybertruck Graffiti Hoodie",
-				slug: "cybertruck_graffiti_hoodie",
+				name: 'Cybertruck Graffiti Hoodie',
+				slug: 'cybertruck_graffiti_hoodie',
 				description:
-					"As with the iconic Tesla logo, the Cybertruck Graffiti Hoodie is a classic in the making. Unisex style featuring soft fleece and an adjustable, jersey-lined hood for comfortable coverage.",
+					'As with the iconic Tesla logo, the Cybertruck Graffiti Hoodie is a classic in the making. Unisex style featuring soft fleece and an adjustable, jersey-lined hood for comfortable coverage.',
 				price: 60,
-				category: "hoodies"
+				category: 'hoodies',
 			},
-			amount: 24
-		}
-	]
+			amount: 24,
+		},
+	],
 };

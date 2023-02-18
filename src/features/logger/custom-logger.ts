@@ -1,8 +1,8 @@
-import { Injectable, ConsoleLogger } from "@nestjs/common";
-import { ConsoleLoggerOptions } from "@nestjs/common/services/console-logger.service";
-import { ConfigService } from "@nestjs/config";
-import { getLogLevels } from "src/utils/get-log-levels";
-import { LogsService } from "./logs.service";
+import { Injectable, ConsoleLogger } from '@nestjs/common';
+import { ConsoleLoggerOptions } from '@nestjs/common/services/console-logger.service';
+import { ConfigService } from '@nestjs/config';
+import { getLogLevels } from 'src/utils/get-log-levels';
+import { LogsService } from './logs.service';
 
 @Injectable()
 export class CustomLogger extends ConsoleLogger {
@@ -12,14 +12,14 @@ export class CustomLogger extends ConsoleLogger {
 		context: string,
 		options: ConsoleLoggerOptions,
 		configService: ConfigService,
-		logsService: LogsService
+		logsService: LogsService,
 	) {
-		const environment = configService.get("NODE_ENV");
+		const environment = configService.get('NODE_ENV');
 
 		super(context, {
 			...options,
-			logLevels: getLogLevels(environment === "production"),
-			timestamp: true
+			logLevels: getLogLevels(environment === 'production'),
+			timestamp: true,
 		});
 
 		this.logsService = logsService;
@@ -43,7 +43,7 @@ export class CustomLogger extends ConsoleLogger {
 		this.logsService.createLog({
 			message,
 			context,
-			level: "error"
+			level: 'error',
 		});
 	}
 
@@ -53,7 +53,7 @@ export class CustomLogger extends ConsoleLogger {
 		this.logsService.createLog({
 			message,
 			context,
-			level: "error"
+			level: 'error',
 		});
 	}
 
@@ -63,7 +63,7 @@ export class CustomLogger extends ConsoleLogger {
 		this.logsService.createLog({
 			message,
 			context,
-			level: "error"
+			level: 'error',
 		});
 	}
 
@@ -73,7 +73,7 @@ export class CustomLogger extends ConsoleLogger {
 		this.logsService.createLog({
 			message,
 			context,
-			level: "error"
+			level: 'error',
 		});
 	}
 }

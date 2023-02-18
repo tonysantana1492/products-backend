@@ -1,29 +1,23 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UserNotFoundException } from "./exceptions/user-not-found.exception";
-import { UserDocument, User } from "./entities/user.entity";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
-import { TokenPayload } from "src/authorization/interfaces/token-payload.interface";
-import { EmailAlreadyExistsException } from "./exceptions/email-already-exists.exception";
-import { UserException } from "./exceptions/user.exception";
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserNotFoundException } from './exceptions/user-not-found.exception';
+import { UserDocument, User } from './entities/user.entity';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { TokenPayload } from 'src/authorization/interfaces/token-payload.interface';
+import { UserException } from './exceptions/user.exception';
 
 @Injectable()
 export class UsersService {
 	constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-	public async create(createUserDto: CreateUserDto): Promise<TokenPayload> {
-		try {
-			const newUser = await this.userModel.create(createUserDto);
+	public async create(userData: CreateUserDto): Promise<TokenPayload> {
+		const createdUser = new this.userModel(userData);
+		await createdUser.save();
 
-			const payload = { userId: newUser._id };
+		const payload = { userId: createdUser._id };
 
-			return payload;
-		} catch (error: any) {
-			if (error?.name === "MongoServerError") throw new EmailAlreadyExistsException();
-
-			throw new UserException("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return payload;
 	}
 
 	public async getAllUsers(): Promise<User[]> {
@@ -33,20 +27,20 @@ export class UsersService {
 	public async getById(id: string): Promise<User> {
 		const user = this.userModel.findOne({ _id: id }).exec();
 
-		if (user) {
-			return user;
+		if (!user) {
+			throw new UserNotFoundException(id);
 		}
 
-		throw new UserNotFoundException(id);
+		return user;
 	}
 
 	public async getByEmail(email: string) {
 		const user = await this.userModel.findOne({ email }).exec();
 
-		if (user) {
-			return user;
+		if (!user) {
+			throw new UserException('User with this email does not exist', HttpStatus.NOT_FOUND);
 		}
 
-		throw new UserException("User with this email does not exist", HttpStatus.NOT_FOUND);
+		return user;
 	}
 }

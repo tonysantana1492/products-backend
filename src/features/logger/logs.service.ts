@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { CreateLogDto } from "./dto/create-log.dto";
-import { Log, LogDocument } from "./entities/log.entity";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable } from '@nestjs/common';
+import { CreateLogDto } from './dto/create-log.dto';
+import { Log, LogDocument } from './entities/log.entity';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class LogsService {

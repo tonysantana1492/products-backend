@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsNotEmpty, IsNumber, IsPositive } from "class-validator";
-import { CreateProductDTO } from "src/features/products/dto/create-product.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import { CreateProductDTO } from 'src/features/products/dto/create-product.dto';
 
 export class CreateInventoryDTO {
 	@ApiProperty({
-		example: CreateProductDTO
+		example: CreateProductDTO,
 	})
 	product: CreateProductDTO;
 
@@ -13,7 +13,7 @@ export class CreateInventoryDTO {
 	@IsInt()
 	@IsNotEmpty()
 	@ApiProperty({
-		example: 3
+		example: 3,
 	})
 	amount: number;
 }

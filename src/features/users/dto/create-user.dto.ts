@@ -1,5 +1,5 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength, IsEnum, MaxLength, Matches } from "class-validator";
-import { Role } from "src/authorization/enums/role.enum";
+import { IsEmail, IsString, IsNotEmpty, MinLength, IsEnum, MaxLength, Matches } from 'class-validator';
+import { Role } from 'src/authorization/enums/role.enum';
 
 export class CreateUserDto {
 	@IsString()
@@ -13,7 +13,7 @@ export class CreateUserDto {
 	@MinLength(8)
 	@MaxLength(20)
 	@Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-		message: "Password too weak"
+		message: 'Password too weak',
 	})
 	password: string;
 

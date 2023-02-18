@@ -1,21 +1,21 @@
-import { ConfigService } from "@nestjs/config";
-import { Test, TestingModule } from "@nestjs/testing";
-import { AuthenticationService } from "../authentication.service";
-import { JwtService } from "@nestjs/jwt";
-import { User } from "../../features/users/entities/user.entity";
-import { UsersService } from "../../features/users/users.service";
-import { mockedJwtService } from "../../utils/mocks/jwt.service";
-import { mockedConfigService } from "../../utils/mocks/config.service";
-import * as bcrypt from "bcrypt";
-import { mockedUserAdmin } from "./user.mock";
-import { getModelToken } from "@nestjs/mongoose";
-import { Query } from "mongoose";
-import { createMock } from "@golevelup/ts-jest";
-import { EmptyLogger } from "src/utils/empty-logger";
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthenticationService } from '../authentication.service';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../../features/users/entities/user.entity';
+import { UsersService } from '../../features/users/users.service';
+import { mockedJwtService } from '../../utils/mocks/jwt.service';
+import { mockedConfigService } from '../../utils/mocks/config.service';
+import * as bcrypt from 'bcrypt';
+import { mockedUserAdmin } from './user.mock';
+import { getModelToken } from '@nestjs/mongoose';
+import { Query } from 'mongoose';
+import { createMock } from '@golevelup/ts-jest';
+import { EmptyLogger } from 'src/utils/empty-logger';
 
-jest.mock("bcrypt");
+jest.mock('bcrypt');
 
-describe("The AuthenticationService", () => {
+describe('The AuthenticationService', () => {
 	let authenticationService: AuthenticationService;
 	let usersService: UsersService;
 	let bcryptCompare: jest.Mock;
@@ -24,12 +24,12 @@ describe("The AuthenticationService", () => {
 
 	beforeEach(async () => {
 		userData = {
-			...mockedUserAdmin
+			...mockedUserAdmin,
 		};
 		findUser = jest.fn().mockReturnValue(
 			createMock<Query<User, User>>({
-				exec: jest.fn().mockReturnValue(userData)
-			}) as any
+				exec: jest.fn().mockReturnValue(userData),
+			}) as any,
 		);
 
 		const usersRepository = {
@@ -40,7 +40,7 @@ describe("The AuthenticationService", () => {
 			update: jest.fn(),
 			create: jest.fn(),
 			remove: jest.fn(),
-			exec: jest.fn()
+			exec: jest.fn(),
 		};
 
 		bcryptCompare = jest.fn().mockReturnValue(true);
@@ -52,17 +52,17 @@ describe("The AuthenticationService", () => {
 				AuthenticationService,
 				{
 					provide: ConfigService,
-					useValue: mockedConfigService
+					useValue: mockedConfigService,
 				},
 				{
 					provide: JwtService,
-					useValue: mockedJwtService
+					useValue: mockedJwtService,
 				},
 				{
-					provide: getModelToken("User"),
-					useValue: usersRepository
-				}
-			]
+					provide: getModelToken('User'),
+					useValue: usersRepository,
+				},
+			],
 		}).compile();
 
 		module.useLogger(new EmptyLogger());
@@ -70,46 +70,46 @@ describe("The AuthenticationService", () => {
 		usersService = await module.get<UsersService>(UsersService);
 	});
 
-	describe("when accessing the data of authenticating user", () => {
-		it("should attempt to get a user by email", async () => {
-			const getByEmailSpy = jest.spyOn(usersService, "getByEmail");
-			await authenticationService.getAuthenticatedUser("user@email.com", "strongPassword");
+	describe('when accessing the data of authenticating user', () => {
+		it('should attempt to get a user by email', async () => {
+			const getByEmailSpy = jest.spyOn(usersService, 'getByEmail');
+			await authenticationService.getAuthenticatedUser('user@email.com', 'strongPassword');
 			expect(getByEmailSpy).toBeCalledTimes(1);
 		});
 
-		describe("and the provided password is not valid", () => {
+		describe('and the provided password is not valid', () => {
 			beforeEach(() => {
 				bcryptCompare.mockReturnValue(false);
 			});
-			it("should throw an error", async () => {
+			it('should throw an error', async () => {
 				await expect(
-					authenticationService.getAuthenticatedUser("user@email.com", "strongPassword")
+					authenticationService.getAuthenticatedUser('user@email.com', 'strongPassword'),
 				).rejects.toThrow();
 			});
 		});
 
-		describe("and the provided password is valid", () => {
+		describe('and the provided password is valid', () => {
 			beforeEach(() => {
 				bcryptCompare.mockReturnValue(true);
 			});
-			describe("and the user is found in the database", () => {
-				it("should return the user data", async () => {
-					const user = await authenticationService.getAuthenticatedUser("user@email.com", "strongPassword");
+			describe('and the user is found in the database', () => {
+				it('should return the user data', async () => {
+					const user = await authenticationService.getAuthenticatedUser('user@email.com', 'strongPassword');
 					expect(user).toBe(userData);
 				});
 			});
 
-			describe("and the user is not found in the database", () => {
+			describe('and the user is not found in the database', () => {
 				beforeEach(() => {
 					findUser.mockReturnValue(
 						createMock<Query<User, User>>({
-							exec: jest.fn().mockReturnValue(null)
-						}) as any
+							exec: jest.fn().mockReturnValue(null),
+						}) as any,
 					);
 				});
-				it("should throw an error", async () => {
+				it('should throw an error', async () => {
 					await expect(
-						authenticationService.getAuthenticatedUser("user@email.com", "strongPassword")
+						authenticationService.getAuthenticatedUser('user@email.com', 'strongPassword'),
 					).rejects.toThrow();
 				});
 			});
