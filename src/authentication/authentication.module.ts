@@ -6,6 +6,7 @@ import { UsersModule } from "src/features/users/users.module";
 import { JwtStrategy } from "../authorization/strategies/jwt.strategy";
 import { AuthenticationService } from "./authentication.service";
 import { AuthenticationController } from "./authentication.controller";
+import { LocalStrategy } from "src/authorization/strategies/local.strategy";
 @Module({
 	imports: [
 		UsersModule,
@@ -22,7 +23,7 @@ import { AuthenticationController } from "./authentication.controller";
 			})
 		})
 	],
-	providers: [AuthenticationService, JwtStrategy],
+	providers: [AuthenticationService, LocalStrategy, JwtStrategy],
 	controllers: [AuthenticationController],
 	exports: [AuthenticationService, JwtStrategy, PassportModule]
 })
