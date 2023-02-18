@@ -4,20 +4,16 @@ import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { UserDocument, User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { TokenPayload } from 'src/authorization/interfaces/token-payload.interface';
 import { UserException } from './exceptions/user.exception';
 
 @Injectable()
 export class UsersService {
 	constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-	public async create(userData: CreateUserDto): Promise<TokenPayload> {
+	public async create(userData: CreateUserDto): Promise<User> {
 		const createdUser = new this.userModel(userData);
-		await createdUser.save();
 
-		const payload = { userId: createdUser._id };
-
-		return payload;
+		return createdUser.save();
 	}
 
 	public async getAllUsers(): Promise<User[]> {
@@ -25,7 +21,7 @@ export class UsersService {
 	}
 
 	public async getById(id: string): Promise<User> {
-		const user = this.userModel.findOne({ _id: id }).exec();
+		const user = this.userModel.findById(id).exec();
 
 		if (!user) {
 			throw new UserNotFoundException(id);

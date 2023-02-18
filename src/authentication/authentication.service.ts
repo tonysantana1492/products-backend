@@ -4,10 +4,10 @@ import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { TokenPayload } from '../authorization/interfaces/token-payload.interface';
-import { LogInDto } from './dto/login.dto';
 import { WrongCredentialsException } from './exceptions/wrong-credentials.exception';
 import { User } from 'src/features/users/entities/user.entity';
 import MongoErrorCode from 'src/database/mongoErrorCode.enum';
+import { EmailAlreadyExistsException } from 'src/features/users/exceptions/email-already-exists.exception';
 
 @Injectable()
 export class AuthenticationService {
@@ -23,17 +23,20 @@ export class AuthenticationService {
 		const hashedPassword = await bcrypt.hash(registrationData.password, 10);
 
 		try {
-			const payload: TokenPayload = await this.usersService.create({
+			const user: User = await this.usersService.create({
 				...registrationData,
 				password: hashedPassword,
 			});
 
+			const payload: TokenPayload = { userId: user._id };
+			const token = this.sigInToken(payload);
+
 			return {
-				access_token: this.sigInToken(payload),
+				token,
 			};
 		} catch (error) {
 			if (error?.code === MongoErrorCode.DuplicateKey) {
-				throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+				throw new EmailAlreadyExistsException();
 			}
 			throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
 		}
