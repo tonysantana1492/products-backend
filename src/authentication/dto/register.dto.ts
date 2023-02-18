@@ -1,18 +1,18 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString, IsNotEmpty, MinLength, IsEnum, MaxLength, Matches } from "class-validator";
-import { Role } from "src/authorization/enums/role.enum";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsString, IsNotEmpty, MinLength, IsEnum, MaxLength, Matches } from 'class-validator';
+import { Role } from 'src/authorization/enums/role.enum';
 
 export class RegisterDto {
 	@IsString()
 	@IsNotEmpty()
 	@ApiProperty({
-		example: "John Doe"
+		example: 'John Doe',
 	})
 	name: string;
 
 	@IsEmail()
 	@ApiProperty({
-		example: "test@example.com"
+		example: 'test@example.com',
 	})
 	email: string;
 
@@ -20,10 +20,10 @@ export class RegisterDto {
 	@MinLength(8)
 	@MaxLength(20)
 	@ApiProperty({
-		example: "LongPassword*"
+		example: 'LongPassword*',
 	})
 	@Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-		message: "Password too weak"
+		message: 'Password too weak',
 	})
 	password: string;
 
@@ -31,7 +31,7 @@ export class RegisterDto {
 	@IsNotEmpty()
 	@IsEnum(Role)
 	@ApiProperty({
-		example: "client | admin"
+		example: 'client | admin',
 	})
 	role: string;
 }
