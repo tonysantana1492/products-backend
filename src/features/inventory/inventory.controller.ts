@@ -18,7 +18,7 @@ import MongooseClassSerializerInterceptor from 'src/database/mongooseClassSerial
 export class InventoryController {
 	constructor(private inventoryService: InventoryService) {}
 
-	// @Roles(Role.Admin)
+	@Roles(Role.Admin)
 	@Get()
 	public async getInventaryProducts(): Promise<Inventory[]> {
 		const inventory = await this.inventoryService.getInventaryProducts();

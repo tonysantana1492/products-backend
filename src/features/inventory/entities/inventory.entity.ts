@@ -8,6 +8,12 @@ const options = {
 	toJSON: {
 		getters: true,
 		virtuals: true,
+		transform: (document: any, returnedObject: any) => {
+			delete returnedObject._id;
+			delete returnedObject.__v;
+
+			return returnedObject;
+		},
 	},
 };
 

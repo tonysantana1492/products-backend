@@ -37,7 +37,7 @@ export class AuthenticationController {
 	async login(@Req() request: RequestWithUser): Promise<Token> {
 		const { user } = request;
 
-		const payload: TokenPayload = { userId: user._id };
+		const payload: TokenPayload = { userId: user.id };
 		const token = this.authenticationService.sigInToken(payload);
 
 		return {

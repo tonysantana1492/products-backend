@@ -23,12 +23,12 @@ export class AuthenticationService {
 		const hashedPassword = await bcrypt.hash(registrationData.password, 10);
 
 		try {
-			const user: User = await this.usersService.create({
+			const user = await this.usersService.create({
 				...registrationData,
 				password: hashedPassword,
 			});
 
-			const payload: TokenPayload = { userId: user._id };
+			const payload: TokenPayload = { userId: user.id };
 			const token = this.sigInToken(payload);
 
 			return {

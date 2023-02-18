@@ -61,7 +61,7 @@ describe('The AuthenticationController', () => {
 	describe('when registering', () => {
 		describe('and using valid data', () => {
 			it('should respond with the token', async () => {
-				const tokenData = { access_token: '' };
+				const tokenData = { token: '' };
 
 				await request(app.getHttpServer())
 					.post('/auth/register')

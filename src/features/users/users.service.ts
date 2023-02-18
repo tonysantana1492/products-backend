@@ -10,10 +10,8 @@ import { UserException } from './exceptions/user.exception';
 export class UsersService {
 	constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-	public async create(userData: CreateUserDto): Promise<User> {
-		const createdUser = new this.userModel(userData);
-
-		return createdUser.save();
+	public async create(userData: CreateUserDto): Promise<UserDocument> {
+		return this.userModel.create(userData);
 	}
 
 	public async getAllUsers(): Promise<User[]> {
